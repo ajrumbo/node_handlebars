@@ -1,0 +1,28 @@
+{{>partial_1}}
+
+<h1>Hola mundo desde handlebars</h1>
+<hr>
+<h3>Nombre: {{nombre}}</h3>
+<hr>
+<h3>Paises:</h3>
+<ul>
+{{#each paises}}
+    <li>{{@index}} | {{nombre}} - {{nick}}</li>
+{{/each}}
+</ul>
+<hr>
+<h3>Variable local: {{variable}}</h3>
+<hr>
+<h3>Condicional:</h3>
+{{#if variable}}
+    <p>Holiiiiiii</p>
+{{/if}}
+<hr>
+<h3>Helper personalizado</h3>
+{{!-- 2 formas de importar un helper en la vista --}}
+{{!-- 1. con apertura y cierre --}}
+{{#calculadora 4654 874651}}
+{{/calculadora}}
+<br>
+{{!-- 2. con una llamada simple (no importa si el helper tiene parámetros o no) --}}
+{{saludo}}
