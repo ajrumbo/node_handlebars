@@ -23,7 +23,7 @@ app.use(session({
 }));
 
 //habilitar el uso de los datos del formulario
-// app.use(express.json());
+app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 app.use(csrf());
