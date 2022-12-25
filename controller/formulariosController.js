@@ -42,11 +42,15 @@ const uploadPost = (req,res) => {
 
     form.parse(req, async (err, fields, files) => {
         try {
-            if(err) throw new Error ('Se produjo un error: ' + err);
+            if(err) {
+                throw new Error ('Se produjo un error: ' + err);
+            }
             
             const file = files.foto;
 
-            if(file.originalFilename === '') throw new Error ('No se cargó ninguna imagen');
+            if(file.originalFilename === '') {
+                throw new Error ('No se cargó ninguna imagen');
+            }
 
             const imageTypes = [
                 'image/jpeg',
@@ -54,9 +58,13 @@ const uploadPost = (req,res) => {
                 'image/gif'
             ];
 
-            if(!imageTypes.includes(file.mimetype)) throw new Error ('Formato de archivo no válido. Cargar imagen JPG|PNG|GIF');
+            if(!imageTypes.includes(file.mimetype)) {
+                throw new Error ('Formato de archivo no válido. Cargar imagen JPG|PNG|GIF');
+            }
 
-            if(file.size > form.maxFileSize) throw new Error ('Tamaño máximo del archivo superado (10MB)');
+            if(file.size > form.maxFileSize) {
+                throw new Error ('Tamaño máximo del archivo superado (10MB)');
+            }
 
             let unix = Math.round(+new Date() / 1000);
 
@@ -71,6 +79,7 @@ const uploadPost = (req,res) => {
                     nombre_final = unix + '.gif';
                     break;
             }
+            console.log(nombre_final)
 
             const dirFile = path.join(`../assets/uploads/udemy/${nombre_final}`);
 
