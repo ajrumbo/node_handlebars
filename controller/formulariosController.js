@@ -1,9 +1,7 @@
-import { dir } from "console";
 import { validationResult } from "express-validator";
 import formidable from "formidable";
-import fs, { truncateSync } from "fs";
+import fs from "fs";
 import path from "path";
-import { threadId } from "worker_threads";
 
 const formularios = (req,res) => {
     return res.render('formularios/formularios',{tituloPagina: 'Formularios'});
@@ -42,6 +40,7 @@ const uploadPost = (req,res) => {
 
     form.parse(req, async (err, fields, files) => {
         try {
+            
             if(err) {
                 throw new Error ('Se produjo un error: ' + err);
             }
@@ -62,37 +61,38 @@ const uploadPost = (req,res) => {
                 throw new Error ('Formato de archivo no válido. Cargar imagen JPG|PNG|GIF');
             }
 
-            if(file.size > form.maxFileSize) {
+            if(file.size > 100 * 1024 * 1024) {
                 throw new Error ('Tamaño máximo del archivo superado (10MB)');
             }
-
+            
             let unix = Math.round(+new Date() / 1000);
+            let nombre_final;
 
             switch (file.mimetype){
-                case 'image/jpeg':
-                    nombre_final = unix + '.jpg';
+                case "image/jpeg":
+                    nombre_final = `${unix}.jpg`;
                     break;
-                case 'image/png':
-                    nombre_final = unix + '.png';
+                case "image/png":
+                    nombre_final = `${unix}.png`;
                     break;
-                case 'image/gif':
-                    nombre_final = unix + '.gif';
+                case "image/gif":
+                    nombre_final = `${unix}.gif`;
                     break;
             }
-            console.log(nombre_final)
 
-            const dirFile = path.join(`../assets/uploads/udemy/${nombre_final}`);
+            const dirFile = path.join(`./assets/uploads/udemy/${nombre_final}`);
+
 
             fs.copyFile(file.filepath, dirFile, function(err){
                 if(err) throw err;
             });
 
             req.flash('css', 'success');
-            req.flash('mensaje', [{msg: 'Foto cargada correctamente'}]);
+            req.flash('mensajes', [{msg: 'Foto cargada correctamente'}]);
             return res.redirect('/formularios/upload');
         } catch (error) {
-            req.flash('css', 'error');
-            req.flash('mensaje', [{msg: error.message}]);
+            req.flash('css', 'danger');
+            req.flash('mensajes', [{msg: error.message}]);
             return res.redirect('/formularios/upload');
         }
     });
