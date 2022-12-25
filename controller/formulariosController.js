@@ -26,8 +26,13 @@ const normalPost = (req,res) => {
     return res.send('Holi...')
 }
 
+const upload = (req,res) => {
+
+}
+
 export {
     formularios,
     normal,
-    normalPost
+    normalPost,
+    upload
 }
