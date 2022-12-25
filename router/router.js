@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { index } from "../controller/controller.js";
-import { formularios, normal, normalPost, upload } from "../controller/formulariosController.js";
+import { formularios, normal, normalPost, upload, uploadPost } from "../controller/formulariosController.js";
 import { body } from "express-validator";
 
 const router = Router();
@@ -20,6 +20,10 @@ router.post('/formularios/normal', [
     body('telefono', 'Ingrese un teléfono válido')
         .isMobilePhone()
 ],normalPost);
-router.get('/formularios/upload', upload)
+
+
+router.get('/formularios/upload', upload);
+
+router.post('/formularios/upload', uploadPost);
 
 export default router;
