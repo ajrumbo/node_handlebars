@@ -2,6 +2,7 @@ import { Router } from "express";
 import { index } from "../controller/controller.js";
 import { formularios, normal, normalPost, upload, uploadPost } from "../controller/formulariosController.js";
 import { body } from "express-validator";
+import { utiles } from "../controller/utilesController.js";
 
 const router = Router();
 
@@ -23,7 +24,8 @@ router.post('/formularios/normal', [
 
 
 router.get('/formularios/upload', upload);
-
 router.post('/formularios/upload', uploadPost);
+
+router.get('/utiles',utiles);
 
 export default router;
