@@ -2,7 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import router from "./router/router.js";
 import { create } from "express-handlebars";
-import { calculadora, saludo } from "./views/helpers/helpersPrincipal.js";
+import { calculadora, saludo } from "./helpers/helpersPrincipal.js";
 import session from "express-session";
 import csrf from "csurf";
 import flash from "connect-flash";

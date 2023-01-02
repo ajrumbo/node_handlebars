@@ -2,7 +2,7 @@ import { Router } from "express";
 import { index } from "../controller/controller.js";
 import { formularios, normal, normalPost, upload, uploadPost } from "../controller/formulariosController.js";
 import { body } from "express-validator";
-import { utiles } from "../controller/utilesController.js";
+import { utiles, rest } from "../controller/utilesController.js";
 
 const router = Router();
 
@@ -27,5 +27,6 @@ router.get('/formularios/upload', upload);
 router.post('/formularios/upload', uploadPost);
 
 router.get('/utiles',utiles);
+router.get('/utiles/cliente-rest',rest);
 
 export default router;

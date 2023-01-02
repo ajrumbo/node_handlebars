@@ -1,0 +1,22 @@
+<H1>HOLA DESDE REST</H1>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Full name</th>
+            <th>Precio</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each envio}}
+            <tr>
+                <td>{{this.CoinInfo.Id}}</td>
+                <td>{{this.CoinInfo.Name}}</td>
+                <td>{{this.CoinInfo.FullName}}</td>
+                <td>{{this.DISPLAY.USD.PRICE}}</td>
+            </tr>
+        {{/each}}
+    </tbody>
+</table>
