@@ -1,8 +1,9 @@
 import { Router } from "express";
 import { index } from "../controller/controller.js";
 import { formularios, normal, normalPost, upload, uploadPost } from "../controller/formulariosController.js";
+import { home, pdf, excel, csv } from "../controller/reportesController.js";
 import { body } from "express-validator";
-import { utiles, rest } from "../controller/utilesController.js";
+import { utiles, mail, jwt, qr, rest } from "../controller/utilesController.js";
 import { 
     mongo, 
     categorias, 
@@ -45,8 +46,18 @@ router.get('/formularios/upload', upload);
 router.post('/formularios/upload', uploadPost);
 
 
+//****************    reportes      *****************************/
+router.get('/reportes', home);
+router.get('/reportes/pdf', pdf);
+router.get('/reportes/excel', excel);
+router.get('/reportes/csv', csv);
+
+
 //****************    utiles      *****************************/
 router.get('/utiles', utiles);
+router.get('/utiles/mail', mail);
+router.get('/utiles/jwt', jwt);
+router.get('/utiles/qr', qr);
 router.get('/utiles/cliente-rest', rest);
 
 
