@@ -1,0 +1,39 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/">Home</a></li>
+    <li class="breadcrumb-item"><a href="/mongo">MongoDB</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Categorías</li>
+  </ol>
+</nav>
+<h1>Categorías</h1>
+<p>
+{{>alerta}}
+  <a href="/mongo/categorias/crear" class="btn btn-success">Crear</a>
+</p>
+<div class="responsive">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each datos}}
+        <tr>
+          <td>{{_id}}</td>
+          <td>{{nombre}}</td>
+          <td>
+            <a href="/mongo/categorias/editar/{{_id}}"><i class="fas fa-edit"></i></a>
+            &nbsp;
+            <a href="javascript:void(0);"
+              onclick="confirmaAlert('¿Realmente desea eliminar este registro?', '/mongo/categorias/eliminar/{{_id}}');">
+              <i class="fas fa-trash text-danger"></i>
+            </a>
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>

@@ -2,12 +2,15 @@ import express from "express";
 import dotenv from "dotenv";
 import router from "./router/router.js";
 import { create } from "express-handlebars";
-import { calculadora, saludo } from "./helpers/helpersPrincipal.js";
+import { calculadora, saludo, formatearNumero, selected } from "./helpers/helpersPrincipal.js";
 import session from "express-session";
 import csrf from "csurf";
 import flash from "connect-flash";
+import conectarDB from "./config/db.js";
 
 dotenv.config();
+
+conectarDB();
 
 const app = express();
 
@@ -35,7 +38,9 @@ const hbs = create({
     partialsDir: ['./views/components'],
     helpers: {
         calculadora,
-        saludo
+        saludo,
+        formatearNumero,
+        selected
     }
 });
 //Se declara handlebars como el motor de las vistas

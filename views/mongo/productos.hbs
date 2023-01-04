@@ -1,0 +1,53 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/">Home</a></li>
+    <li class="breadcrumb-item"><a href="/mongo">MongoDB</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Productos</li>
+  </ol>
+</nav>
+<h1>Productos</h1>
+{{>alerta}}
+<p>
+  <a href="/mongo/productos/crear" class="btn btn-success">Crear</a>
+</p>
+<div class="responsive">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Categoría</th>
+        <th>Nombre</th>
+        <th>Precio</th>
+        <th>Descripción</th>
+        <th>Foto</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each datos}}
+        <tr>
+          <td>{{_id}}</td>
+          <td>
+            <a href="">
+                {{categoria_id.nombre}}
+            </a>
+        </td>
+          <td>{{nombre}}</td>
+          <td>${{formatearNumero precio}}</td>
+          <td>{{descripcion}}</td>
+          <td>
+            Foto
+          </td>
+          <td>
+            <a href="/mongo/productos/editar/{{_id}}"><i class="fas fa-edit"></i></a>
+            &nbsp;
+            <a href="javascript:void(0);"
+              onclick="confirmaAlert('¿Realmente desea eliminar este registro?', '/mongo/productos/eliminar/{{_id}}');">
+              <i class="fas fa-trash text-danger"></i>
+            </a>
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>

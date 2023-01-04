@@ -13,8 +13,6 @@ const normal = (req,res) => {
 
 const normalPost = (req,res) => {
     const {nombre, correo, telefono} = req.body;//form-data
-    
-    console.log(req.body)
 
     const errors = validationResult(req);
     
