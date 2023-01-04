@@ -387,6 +387,7 @@ const eliminarFoto = async (req, res) => {
 
         //Borramos el archivo 
         fs.unlinkSync(`./assets/uploads/producto/${foto.nombre}`);
+        
 
         await foto.remove();
         req.flash('css', 'success');
