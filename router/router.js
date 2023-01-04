@@ -17,7 +17,11 @@ import {
     crearProductoPost,
     editarProducto,
     editarProductoPost,
-    eliminarProducto
+    eliminarProducto,
+    productoCategoria,
+    productoFotos,
+    productoFotosPost,
+    eliminarFoto
 } from "../controller/mongoController.js";
 
 const router = Router();
@@ -89,5 +93,12 @@ router.post('/mongo/productos/editar/:id', [
     body('descripcion', 'La descripción es obligatoria').trim().notEmpty().escape()
 ], editarProductoPost);
 router.get('/mongo/productos/eliminar/:id', eliminarProducto);
+
+//****************    Mongo - Productos/categoria      *****************************/
+router.get('/mongo/productos/categoria/:id', productoCategoria);
+//****************    Mongo - Productos/fotos      *****************************/
+router.get('/mongo/productos/fotos/:id', productoFotos);
+router.post('/mongo/productos/fotos/:id', productoFotosPost);
+router.get('/mongo/productos/fotos/eliminar/:idProducto/:idFoto', eliminarFoto);
 
 export default router;

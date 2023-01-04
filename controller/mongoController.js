@@ -2,6 +2,9 @@ import Categoria from "../models/Categoria.js";
 import Producto from "../models/Producto.js";
 import ProductoFoto from "../models/ProductoFoto.js";
 import { validationResult } from "express-validator";
+import formidable from "formidable";
+import fs from "fs";
+import path from "path";
 
 const mongo = (req, res) => {
     res.render('mongo/home', {tituloPagina: 'MongoDB'});
@@ -112,7 +115,7 @@ const eliminar = async (req, res) => {
         
         if(!categoria) throw new Error ('No existe esta categoría');
 
-        categoria.remove();
+        await categoria.remove();
 
         req.flash('css', 'success');
         req.flash('mensajes', [{msg: 'Categoría eliminada correctamente'}]);
@@ -239,7 +242,7 @@ const eliminarProducto = async (req, res) => {
         
         if(!producto) throw new Error ('No existe este Producto');
 
-        producto.remove();
+        await producto.remove();
 
         req.flash('css', 'success');
         req.flash('mensajes', [{msg: 'Producto eliminado correctamente'}]);
@@ -249,6 +252,152 @@ const eliminarProducto = async (req, res) => {
         req.flash('mensajes', [{msg: error.message}]);
         res.redirect('/mongo/productos');
     }
+}
+
+const productoCategoria = async (req, res) => {
+    const {id} = req.params;
+
+    try {
+
+        const datos = await Producto.find({categoria_id: id}).populate('categoria_id').lean().sort('nombre');
+        
+        const categoriaNombre = datos[0].categoria_id.nombre;
+
+        if(!datos) throw new Error ('No existen productos para esta categoría');
+        
+        return res.render('mongo/productosCategoria',{tituloPagina: 'MongoDB', datos, categoriaNombre});
+    } catch (error) {
+        req.flash('css','danger');
+        req.flash('mensajes', [{msg: error.message}]);
+        res.redirect('/mongo/productos');
+    }
+
+}
+
+const productoFotos = async (req, res) => {
+    const {id} = req.params;
+
+    try {
+        const producto = await Producto.findById(id).lean();
+        
+        if(!producto) throw new Error ('No existe este Producto');
+
+        const fotos = await ProductoFoto.find({producto_id: id}).lean();
+        
+        return res.render('mongo/productoFotos',{tituloPagina: 'MongoDB', producto, fotos});
+    } catch (error) {
+        req.flash('css','danger');
+        req.flash('mensajes', [{msg: error.message}]);
+        res.redirect('/mongo/productos');
+    }
+    
+}
+
+const productoFotosPost = async (req, res) => {
+    const {id} = req.params;
+    const form = new formidable.IncomingForm();
+    form.maxFileSize = 100 * 1024 * 1024; //10Mb
+    try {
+        const producto = await Producto.findById(id).lean();
+        
+        if(!producto) throw new Error ('No existe este Producto');
+
+    
+
+        form.parse(req, async (err, fields, files) => {
+            try {
+                
+                if(err) {
+                    throw new Error ('Se produjo un error: ' + err);
+                }
+                
+                const file = files.foto;
+
+                if(file.originalFilename === '') {
+                    throw new Error ('No se cargó ninguna imagen');
+                }
+
+                const imageTypes = [
+                    'image/jpeg',
+                    'image/png',
+                    'image/gif'
+                ];
+
+                if(!imageTypes.includes(file.mimetype)) {
+                    throw new Error ('Formato de archivo no válido. Cargar imagen JPG|PNG|GIF');
+                }
+
+                if(file.size > 100 * 1024 * 1024) {
+                    throw new Error ('Tamaño máximo del archivo superado (10MB)');
+                }
+                
+                let unix = Math.round(+new Date() / 1000);
+                let nombre_final;
+
+                switch (file.mimetype){
+                    case "image/jpeg":
+                        nombre_final = `${unix}.jpg`;
+                        break;
+                    case "image/png":
+                        nombre_final = `${unix}.png`;
+                        break;
+                    case "image/gif":
+                        nombre_final = `${unix}.gif`;
+                        break;
+                }
+
+                const dirFile = path.join(`./assets/uploads/producto/${nombre_final}`);
+
+
+                fs.copyFile(file.filepath, dirFile, function(err){
+                    if(err) throw err;
+                });
+
+                const foto = new ProductoFoto({
+                    producto_id: id,
+                    nombre: `${nombre_final}`
+                });
+
+                await foto.save();
+
+                req.flash('css', 'success');
+                req.flash('mensajes', [{msg: 'Foto cargada correctamente'}]);
+                return res.redirect(`/mongo/productos/fotos/${id}`);
+            } catch (error) {
+                req.flash('css', 'danger');
+                req.flash('mensajes', [{msg: error.message}]);
+                return res.redirect(`/mongo/productos/fotos/${id}`);
+            }
+        });
+
+    } catch (error) {
+        req.flash('css','danger');
+        req.flash('mensajes', [{msg: error.message}]);
+        res.redirect('/mongo/productos');
+    }
+}
+
+const eliminarFoto = async (req, res) => {
+    const {idProducto,idFoto} = req.params;
+
+    try {
+        const foto = await ProductoFoto.findOne({_id: idFoto, producto_id: idProducto});
+        console.log(foto)
+        if(!foto) throw new Error ('No existe la foto');
+
+        //Borramos el archivo 
+        // fs.unlinkSync(`./assets/uploads/producto/${foto.nombre}`);
+
+        await foto.remove();
+        req.flash('css', 'success');
+        req.flash('mensajes', [{msg: 'Foto eliminada correctamente'}]);
+        return res.redirect(`/mongo/productos/fotos/${idProducto}`);
+    } catch (error) {
+        req.flash('css','danger');
+        req.flash('mensajes', [{msg: error.message}]);
+        return res.redirect(`/mongo/productos/fotos/${idProducto}`);
+    }
+    
 }
 
 
@@ -265,5 +414,9 @@ export {
     crearProductoPost,
     editarProducto,
     editarProductoPost,
-    eliminarProducto
+    eliminarProducto,
+    productoCategoria,
+    productoFotos,
+    productoFotosPost,
+    eliminarFoto
 }

@@ -1,0 +1,48 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/">Home</a></li>
+    <li class="breadcrumb-item"><a href="/mongo">MongoDB</a></li>
+    <li class="breadcrumb-item"><a href="/mongo/productos">Productos</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Fotos: Producto - {{producto.nombre}}</li>
+  </ol>
+</nav>
+<h1>{{producto.nombre}}: Fotos</h1>
+{{>alerta}}
+<form action="/mongo/productos/fotos/{{producto._id}}?_csrf={{csrfToken}}" method="post" name="form" enctype="multipart/form-data">
+    <div class="row">
+        <div class="form-group izquierda">
+            <label for="foto">Foto</label>
+            <input type="file" name="foto" id="foto" class="form-control" />
+        </div>
+    </div>
+
+    <hr />
+    <input type="submit" value="Cargar" class="btn btn-primary" />
+
+</form>
+
+<div class="row">
+    <table class="table table bordered">
+        <thead>
+            <tr>
+                <th>Foto</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each fotos}}
+                <tr>
+                    <td>
+                        <img src="/uploads/producto/{{nombre}}" width="200" height="200">
+                    </td>
+                    <td>
+                        <a href="javascript:void(0);"
+                        onclick="confirmaAlert('¿Realmente desea eliminar este registro?', '/mongo/productos/fotos/eliminar/{{producto_id}}/{{_id}}');">
+                            <i class="fas fa-trash text-danger"></i>
+                        </a>
+                    </td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
