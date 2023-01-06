@@ -25,6 +25,7 @@ conectarSQL.sync().then( () => {
 const app = express();
 
 
+
 app.use(session({
     secret: process.env.SECRET,
     saveUninitialized: false,
