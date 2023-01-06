@@ -7,10 +7,20 @@ import session from "express-session";
 import csrf from "csurf";
 import flash from "connect-flash";
 import conectarDB from "./config/db.js";
+import conectarSQL from "./config/mySqlDB.js";
+
 
 dotenv.config();
 
+//Conexión Mongo
 conectarDB();
+
+//Conexión MySql
+conectarSQL.sync().then( () => {
+    console.log("Conectado MySql");
+}).catch( error => {
+    console.log(error.message);
+});
 
 const app = express();
 
