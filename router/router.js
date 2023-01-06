@@ -23,6 +23,12 @@ import {
     productoFotosPost,
     eliminarFoto
 } from "../controller/mongoController.js";
+import { 
+    mysql,
+    categoriasM,
+    crearM,
+    crearMPost
+} from "../controller/mysqlController.js";
 
 const router = Router();
 
@@ -100,5 +106,14 @@ router.get('/mongo/productos/categoria/:id', productoCategoria);
 router.get('/mongo/productos/fotos/:id', productoFotos);
 router.post('/mongo/productos/fotos/:id', productoFotosPost);
 router.get('/mongo/productos/fotos/eliminar/:idProducto/:idFoto', eliminarFoto);
+
+
+/*********************************   MySQL   **************************************/
+router.get('/mysql', mysql);
+router.get('/mysql/categorias', categoriasM);
+router.get('/mysql/categorias/crear', crearM);
+router.post('/mysql/categorias/crear', [
+    body('nombre', 'Ingrese un nombre válido').trim().notEmpty().escape()
+], crearMPost);
 
 export default router;

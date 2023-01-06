@@ -1,5 +1,5 @@
 import { Sequelize } from "sequelize";
-import conectarSQL from "./config/mySqlDB.js";
+import conectarSQL from "../config/mySqlDB.js";
 import slug from "slug";
 import Category from "./Category.js";
 

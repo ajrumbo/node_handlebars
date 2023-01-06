@@ -1,5 +1,5 @@
 import { Sequelize } from "sequelize";
-import conectarSQL from "./config/mySqlDB.js";
+import conectarSQL from "../config/mySqlDB.js";
 import Product from "./Product.js";
 
 const ProductPhoto = conectarSQL.define('productPhotos', {
