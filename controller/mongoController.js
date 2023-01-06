@@ -242,7 +242,7 @@ const eliminarProducto = async (req, res) => {
         
         if(!producto) throw new Error ('No existe este Producto');
 
-        await producto.remove();
+        await await producto.remove();
 
         req.flash('css', 'success');
         req.flash('mensajes', [{msg: 'Producto eliminado correctamente'}]);
@@ -382,11 +382,14 @@ const eliminarFoto = async (req, res) => {
 
     try {
         const foto = await ProductoFoto.findOne({_id: idFoto, producto_id: idProducto});
+<<<<<<< HEAD
         
         if(!foto) throw new Error ('No existe la foto');
 
         //Borramos el archivo 
         fs.unlinkSync(`./assets/uploads/producto/${foto.nombre}`);
+=======
+>>>>>>> 00193aa3950a64d776c717b22b039f8c5c301e20
 
         await foto.remove();
         req.flash('css', 'success');
