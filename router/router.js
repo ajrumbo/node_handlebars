@@ -27,7 +27,20 @@ import {
     mysql,
     categoriasM,
     crearM,
-    crearMPost
+    crearMPost,
+    editarM,
+    editarMPost,
+    eliminarM,
+    productosM,
+    crearMProducto,
+    crearMProductoPost,
+    productoCategoriaM,
+    productoEditarM,
+    productoEditarMPost,
+    eliminarProductoM,
+    productoFotosM,
+    productoFotosMPost,
+    eliminarFotoM
 } from "../controller/mysqlController.js";
 
 const router = Router();
@@ -115,5 +128,34 @@ router.get('/mysql/categorias/crear', crearM);
 router.post('/mysql/categorias/crear', [
     body('nombre', 'Ingrese un nombre válido').trim().notEmpty().escape()
 ], crearMPost);
+router.get('/mysql/categorias/editar/:id', editarM);
+router.post('/mysql/categorias/editar/:id', [
+    body('nombre', 'Ingrese un nombre válido').trim().notEmpty().escape()
+], editarMPost);
+router.get('/mysql/categorias/eliminar/:id', eliminarM);
+
+/*********************************   MySQL/Productos   **************************************/
+router.get('/mysql/productos', productosM);
+router.get('/mysql/productos/crear', crearMProducto);
+router.post('/mysql/productos/crear', [
+    body('nombre', 'Ingrese un nombre válido').trim().notEmpty().escape(),
+    body('precio', 'El precio es obligatorio').isNumeric().notEmpty(),
+    body('descripcion', 'La descripción es obligatoria').trim().notEmpty().escape()
+], crearMProductoPost);
+router.get('/mysql/productos/editar/:id', productoEditarM);
+router.post('/mysql/productos/editar/:id', [
+    body('nombre', 'Ingrese un nombre válido').trim().notEmpty().escape(),
+    body('precio', 'El precio es obligatorio').isNumeric().notEmpty(),
+    body('descripcion', 'La descripción es obligatoria').trim().notEmpty().escape()
+], productoEditarMPost);
+router.get('/mysql/productos/eliminar/:id', eliminarProductoM);
+/*********************************   MySQL/Productos x Categoría   **************************************/
+router.get('/mysql/productos/categoria/:id', productoCategoriaM);
+
+/*********************************   MySQL/Productos Fotos   **************************************/
+router.get('/mysql/productos/fotos/:id', productoFotosM);
+router.post('/mysql/productos/fotos/:id', productoFotosMPost);
+router.get('/mysql/productos/fotos/eliminar/:idProducto/:idFoto', eliminarFotoM);
+
 
 export default router;

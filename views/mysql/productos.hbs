@@ -1,0 +1,55 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/">Home</a></li>
+    <li class="breadcrumb-item"><a href="/mysql">MySQL</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Productos</li>
+  </ol>
+</nav>
+<h1>Productos</h1>
+{{>alerta}}
+<p>
+  <a href="/mysql/productos/crear" class="btn btn-success">Crear</a>
+</p>
+<div class="responsive">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Categoría</th>
+        <th>Nombre</th>
+        <th>Precio</th>
+        <th>Descripción</th>
+        <th>Foto</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each datos}}
+        <tr>
+          <td>{{id}}</td>
+          <td>
+            <a href="/mysql/productos/categoria/{{idCategoria}}">
+                {{'category.nombre'}}
+            </a>
+        </td>
+          <td>{{nombre}}</td>
+          <td>${{formatearNumero precio}}</td>
+          <td>{{descripcion}}</td>
+          <td>
+            <a href="/mysql/productos/fotos/{{id}}">
+              <i class="fas fa-camera"></i>
+            </a>
+          </td>
+          <td>
+            <a href="/mysql/productos/editar/{{id}}"><i class="fas fa-edit"></i></a>
+            &nbsp;
+            <a href="javascript:void(0);"
+              onclick="confirmaAlert('¿Realmente desea eliminar este registro?', '/mysql/productos/eliminar/{{id}}');">
+              <i class="fas fa-trash text-danger"></i>
+            </a>
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>

@@ -5,6 +5,7 @@ import { validationResult } from "express-validator";
 import formidable from "formidable";
 import fs from "fs";
 import path from "path";
+import slugs from "slug";
 
 const mongo = (req, res) => {
     res.render('mongo/home', {tituloPagina: 'MongoDB'});
@@ -94,9 +95,11 @@ const editarPost = async (req, res) => {
         const categoria = await Categoria.findOne({nombre});
         
         if(categoria) throw new Error ('Ya existe esta categoría');
-        // await categoria.updateOne({nombre});
+        
+        //Editamos el slug también 
+        const slug = slugs(nombre);
 
-        await Categoria.findByIdAndUpdate(id, {nombre});
+        await Categoria.findByIdAndUpdate(id, {nombre, slug});
         req.flash('css', 'success');
         req.flash('mensajes', [{msg: 'Categoría editada correctamente'}]);
         return res.redirect('/mongo/categorias');
@@ -171,7 +174,7 @@ const crearProductoPost = async (req, res) => {
     if(!errors.isEmpty()){
         req.flash('css', 'danger');
         req.flash('mensajes', errors.array());
-        return res.redirect('/mongo/categorias/crear');
+        return res.redirect('/mongo/productos/crear');
     }
 
     try {
@@ -221,7 +224,9 @@ const editarProductoPost = async (req, res) => {
     if(!producto) throw new Error ('No existe este producto');
 
     try {
-        await producto.updateOne({nombre, precio, descripcion, categoria_id});
+        const slug = slugs(nombre);
+
+        await producto.updateOne({nombre, precio, descripcion, categoria_id, slug});
 
         req.flash('css', 'success');
         req.flash('mensajes', [{msg: 'Producto editado correctamente'}]);
