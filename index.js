@@ -8,9 +8,11 @@ import csrf from "csurf";
 import flash from "connect-flash";
 import conectarDB from "./config/db.js";
 import conectarSQL from "./config/mySqlDB.js";
+import passport from "passport";
 
 
 dotenv.config();
+
 
 //Conexión Mongo
 conectarDB();
@@ -36,6 +38,13 @@ app.use(session({
     }
 }));
 
+//se inicializa passport
+app.use(passport.initialize());
+app.use(passport.session());
+passport.serializeUser((user, done) => done(null, {id: user.id, nombre: user.nombre}));
+passport.deserializeUser(async (user, done) => {
+    return done(null, user);
+});
 //habilitar el uso de los datos del formulario
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
@@ -68,6 +77,13 @@ app.use((req,res,next) => {
     res.locals.csrfToken = req.csrfToken();
     res.locals.css = req.flash("css");
     res.locals.mensajes = req.flash("mensajes");
+
+    //Solo para trabajar con handlebars
+    if(req.isAuthenticated()){
+        res.locals.userId = req.user.id;
+        res.locals.userName = req.user.nombre;
+    }
+
     next();
 });
 

@@ -37,6 +37,16 @@
             <a class="p-2 link-secondary" href="/utiles">Útiles</a>
             <a class="p-2 link-secondary" href="/mongo">Mongo DB</a>
             <a class="p-2 link-secondary" href="/mysql">MySQL</a>
+            {{#if userId}}
+                <a class="p-2 link-secondary" href="/acceso/protegida">Ruta Protegida</a>
+                <a class="p-2 link-secondary" href="/acceso/protegida2">Ruta Protegida2</a>
+                <a href="" class="p-2 link-secondary">Hola {{userId}}</a>
+                <a class="p-2 link-secondary" href="javascript:void(0);" onclick="confirmaAlert('¿Realmente desea cerrar sesión?', '/acceso/salir');">Salir</a>
+            {{else}}    
+                <a class="p-2 link-secondary" href="/acceso/login">Login</a>
+                <a class="p-2 link-secondary" href="/acceso/registro">Registro</a>
+            {{/if}}
+            
             </nav>
         </div>
     </div>

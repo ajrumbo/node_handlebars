@@ -8,6 +8,7 @@ import formidable from "formidable";
 import fs from "fs";
 import path from "path";
 
+
 const mysql = (req, res) => {
     res.render('mysql/home', {tituloPagina: 'MySQL'})
 }
@@ -468,7 +469,7 @@ const productoFotosMPost = async (req, res) => {
 const eliminarFotoM = async (req, res) => {
     const {idProducto,idFoto} = req.params;
 
-    console.log(idProducto,idFoto)
+
     try {
         const foto = await ProductPhoto.findOne({ 
             raw: true,

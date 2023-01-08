@@ -42,6 +42,8 @@ import {
     productoFotosMPost,
     eliminarFotoM
 } from "../controller/mysqlController.js";
+import { login, loginPost, registro, registroPost, protegida, protegida2, salir } from "../controller/accesoController.js";
+import verificarUsuario from "../middleware/verificarUsuario.js";
 
 const router = Router();
 
@@ -156,6 +158,41 @@ router.get('/mysql/productos/categoria/:id', productoCategoriaM);
 router.get('/mysql/productos/fotos/:id', productoFotosM);
 router.post('/mysql/productos/fotos/:id', productoFotosMPost);
 router.get('/mysql/productos/fotos/eliminar/:idProducto/:idFoto', eliminarFotoM);
+
+//Acceso
+router.get('/acceso/login', login);
+router.post('/acceso/login', [
+    body('email', 'Ingrese un correo válido')
+        .trim()
+        .isEmail()
+        .normalizeEmail(),
+    body('password', 'Ingrese una contraseña válida')
+        .trim()
+        .isLength({min:6})
+        .escape()
+], loginPost);
+router.get('/acceso/registro', registro);
+router.post('/acceso/registro', [
+    body('email', 'Ingrese un correo válido')
+        .trim()
+        .isEmail()
+        .normalizeEmail(),
+    body('password', 'Ingrese una contraseña válida')
+        .trim()
+        .isLength({min:6})
+        .escape(),
+    body('repassword', 'Ingrese una contraseña válida')
+        .trim()
+        .isLength({min:6})
+        .escape(),
+    body('nombre', 'Ingrese un nombre válido')
+        .trim()
+        .escape()
+        .notEmpty()
+], registroPost);
+router.get('/acceso/protegida', verificarUsuario, protegida);
+router.get('/acceso/protegida2', verificarUsuario, protegida2);
+router.get('/acceso/salir', verificarUsuario, salir);
 
 
 export default router;
