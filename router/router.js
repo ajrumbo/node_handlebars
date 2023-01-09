@@ -44,6 +44,7 @@ import {
 } from "../controller/mysqlController.js";
 import { login, loginPost, registro, registroPost, protegida, protegida2, salir } from "../controller/accesoController.js";
 import verificarUsuario from "../middleware/verificarUsuario.js";
+import { webpay, pagar, respuesta } from "../controller/webpayController.js";
 
 const router = Router();
 
@@ -194,5 +195,9 @@ router.get('/acceso/protegida', verificarUsuario, protegida);
 router.get('/acceso/protegida2', verificarUsuario, protegida2);
 router.get('/acceso/salir', verificarUsuario, salir);
 
+// Webpay
+router.get('/webpay', webpay);
+router.get('/webpay/pagar', pagar);
+router.get('/webpay/respuesta', respuesta);
 
 export default router;
